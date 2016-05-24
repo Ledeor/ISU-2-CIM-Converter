@@ -167,6 +167,7 @@ def main():
     print datetime.datetime.now().strftime("%I:%M%p") + " Writing output file " + serialization.serialFileName + "..."
     if iTempFiles > 0:
         with open(serialization.serialFileName, 'a') as f:
+            f.truncate()
             f.write(serialization.serialHeader)
             i = 1
             while i <= iTempFiles:
