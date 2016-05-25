@@ -27,7 +27,10 @@ import serialization
 #databaseFile  = "P:\\SAP_PROJ\\Tp_energ\\Laufender Betrieb\\Stammdaten_Backup.mdb"
 databaseFile = "..\\Stammdaten.mdb"
 #templateFile = "..\\ISU.CIM.TEMPLATE"
-tmpFileDirectory = "C:\\temp\\"
+tmpFileDirectory = "V:\\temp\\"
+
+curTarifTypList = []
+curSARTList = []
 
 def main():
     #cimParseTemplateAndAccessDB.parseTemplate(templateFile)
@@ -91,9 +94,10 @@ def main():
             if curSART <> rowSART:
                 curSART = rowSART
                 sa = cimServiceCategory.ServiceCategory(curSART)
-                if curSART in sOutput: # Avoid multiple serialization of the same kind (LIEF, NETZ)
+                if curSART in curSARTList: # Avoid multiple serialization of the same kind (LIEF, NETZ)
                     pass
                 else:
+                    curSARTList.append(curSART)
                     sOutput = sOutput + sa.serialize()
 
             # Tariftyp -> PricingStructure
@@ -102,9 +106,10 @@ def main():
                 ps = cimPricingStructure.PricingStructure(curTarifTyp)
                 ps.setCode(row.__getattribute__('Abrk'))
                 ps.setServiceCategory(sa)
-                if curTarifTyp in sOutput: # Avoid multiple serialization of the same tariff type
+                if curTarifTyp in curTarifTypList: # Avoid multiple serialization of the same tariff type
                     pass
                 else:
+                    curTarifTypList.append(curTarifTyp)
                     sOutput = sOutput + ps.serialize()
 
 
