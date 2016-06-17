@@ -25,9 +25,13 @@ import cimParseTemplateAndAccessDB
 import serialization
 
 #databaseFile  = "P:\\SAP_PROJ\\Tp_energ\\Laufender Betrieb\\Stammdaten_Backup.mdb"
-databaseFile = "..\\Stammdaten.mdb"
+#databaseFile = "..\\Stammdaten.mdb"
+databaseFile = "..\\testISU.mdb"
 #templateFile = "..\\ISU.CIM.TEMPLATE"
 tmpFileDirectory = "C:\\temp\\"
+
+curTarifTypList = []
+curSARTList = []
 
 def main():
     #cimParseTemplateAndAccessDB.parseTemplate(templateFile)
@@ -91,9 +95,10 @@ def main():
             if curSART <> rowSART:
                 curSART = rowSART
                 sa = cimServiceCategory.ServiceCategory(curSART)
-                if curSART in sOutput: # Avoid multiple serialization of the same kind (LIEF, NETZ)
+                if curSART in curSARTList: # Avoid multiple serialization of the same kind (LIEF, NETZ)
                     pass
                 else:
+                    curSARTList.append(curSART)
                     sOutput = sOutput + sa.serialize()
 
             # Tariftyp -> PricingStructure
@@ -102,9 +107,10 @@ def main():
                 ps = cimPricingStructure.PricingStructure(curTarifTyp)
                 ps.setCode(row.__getattribute__('Abrk'))
                 ps.setServiceCategory(sa)
-                if curTarifTyp in sOutput: # Avoid multiple serialization of the same tariff type
+                if curTarifTyp in curTarifTypList: # Avoid multiple serialization of the same tariff type
                     pass
                 else:
+                    curTarifTypList.append(curTarifTyp)
                     sOutput = sOutput + ps.serialize()
 
 
@@ -165,9 +171,11 @@ def main():
     sys.stdout.write("\n")
     # Compile ISU.CIM
     print datetime.datetime.now().strftime("%I:%M%p") + " Writing output file " + serialization.serialFileName + "..."
-    if iTempFiles > 0:
-        with open(serialization.serialFileName, 'a') as f:
-            f.write(serialization.serialHeader)
+
+    with open(serialization.serialFileName, 'a') as f:
+        f.truncate()
+        f.write(serialization.serialHeader)
+        if iTempFiles > 0:
             i = 1
             while i <= iTempFiles:
                 with open(tmpFileDirectory + "nis.cim.tmp" + str(i), 'r') as t:
@@ -175,11 +183,11 @@ def main():
                     f.write(t.read())
                     t.close()
                 i = i + 1;
-            f.write(serialization.serialFooter)
-            f.close()
+        else:
+            f.write(sOutput)
+        f.write(serialization.serialFooter)
+        f.close()
         print "...done"
-    else:
-        print "No temp files found."
 
 
     print datetime.datetime.now().strftime("%I:%M%p") + " ...done."
