@@ -47,26 +47,26 @@ class UsagePoint(cimIdentifiedObject.IdentifiedObject):
         self.sRatedCurrent = serialization.serialIndent + serialization.serialIndent + "<cim:UsagePoint.ratedCurrent>" + self.ratedCurrent + "</cim:UsagePoint.ratedCurrent>" + '\n'
 
         # ServiceLocation associated?
-        if self.resSL <> None:
+        if self.resSL != None:
             self.sSl = serialization.serialIndent + serialization.serialIndent
             self.sSl = self.sSl + "<cim:UsagePoint.ServiceLocation rdf:resource=\"#" + self.resSL.mRID + "\"/>" + '\n'
         else:
             self.sSl = ""
 
         # UsagePointLocation associated?
-        if self.resUPL <> None:
+        if self.resUPL != None:
             self.sUpl = serialization.serialIndent + serialization.serialIndent + "<cim:UsagePoint.UsagePointLocation rdf:resource=\"#" + self.resUPL.mRID + "\"/>" + '\n'
         else:
             self.sUpl = ""
 
         # CustomerAgreement associated?
-        if self.resCA <> None:
+        if self.resCA != None:
             self.sCA = serialization.serialIndent + serialization.serialIndent + "<cim:UsagePoint.CustomerAgreement rdf:resource=\"#" + self.resCA.mRID + "\"/>" + '\n'
         else:
             self.sCA = ""
 
         # PricingStructure associated?
-        if self.resPS <> None:
+        if self.resPS != None:
             self.resPS = serialization.serialIndent + serialization.serialIndent + "<cim:UsagePoint.PricingStructure rdf:resource=\"#" + self.resPS.mRID + "\"/>" + '\n'
         else:
             self.resPS = ""

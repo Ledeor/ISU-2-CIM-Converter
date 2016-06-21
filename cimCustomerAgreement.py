@@ -31,13 +31,13 @@ class CustomerAgreement(cimIdentifiedObject.IdentifiedObject):
         self.sContent = cimIdentifiedObject.IdentifiedObject.serialize(self)
 
         # ServiceCategory associated?
-        if self.resSC <> None:
+        if self.resSC != None:
             self.sSC = serialization.serialIndent + serialization.serialIndent + "<cim:CustomerAgreement.ServiceCategory rdf:resource=\"#" + self.resSC.mRID + "\"/>" + '\n'
         else:
             self.sSC = ""
 
         # Customer associated?
-        if self.resCust <> None:
+        if self.resCust != None:
             self.resCust = serialization.serialIndent + serialization.serialIndent + "<cim:CustomerAgreement.Customer rdf:resource=\"#" + self.resCust.mRID + "\"/>" + '\n'
         else:
             self.resCust = ""

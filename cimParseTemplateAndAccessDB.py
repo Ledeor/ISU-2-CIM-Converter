@@ -30,7 +30,7 @@ def readAccessDBAll(databaseFile):
     cIsu = Isu_Stammdaten_Adressen()
     sISUMDCols = ''
     for c in cIsu.colL:
-        if sISUMDCols <> '':
+        if sISUMDCols != '':
             sISUMDCols = sISUMDCols + ", "
         sISUMDCols = sISUMDCols + "[" + c + "]"
 

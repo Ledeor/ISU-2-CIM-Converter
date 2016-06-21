@@ -29,17 +29,14 @@ encoding = 'utf-8'
 def serialEncode(s):
     retVal = ''
     if s is not None:
-        if type(s) is unicode:
-                retVal = ''.join([i for i in s])
-        else:
-            try:
-                retVal = str(s)
-            except:
-                sys.stdout.write("<Encoding exception: " + s + " " + str(type(s)) + ">")
-                sys.stdout.flush()
+        try:
+            retVal = str(s)
+        except:
+            sys.stdout.write("<Encoding exception: " + s + " " + str(type(s)) + ">")
+            sys.stdout.flush()
 
     return retVal
 
 
 def convertXMLpredefEntities(s):
-    return cgi.escape(s).encode(encoding, "xmlcharrefreplace")
+    return str(cgi.escape(s).encode(encoding, "xmlcharrefreplace"))

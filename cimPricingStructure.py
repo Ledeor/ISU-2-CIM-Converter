@@ -33,7 +33,7 @@ class PricingStructure(cimIdentifiedObject.IdentifiedObject):
         self.sCode = serialization.serialIndent + serialization.serialIndent + "<cim:PricingStructure.code>" + self.code + "</cim:PricingStructure.code>" + '\n'
 
         # ServiceCategory associated?
-        if self.resSC <> None:
+        if self.resSC != None:
             self.sSC = serialization.serialIndent + serialization.serialIndent + "<cim:PricingStructure.ServiceCategory rdf:resource=\"#" + self.resSC.mRID + "\"/>" + '\n'
         else:
             self.sSC = ""
