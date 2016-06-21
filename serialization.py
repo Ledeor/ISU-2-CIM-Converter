@@ -25,18 +25,14 @@ serialFooter = "</rdf:RDF>" + '\n'
 
 encoding = 'utf-8'
 
-# Convert 's' to an 'encoding' conform string
+# Convert 's' to an XML conform string
 def serialEncode(s):
     retVal = ''
     if s is not None:
         try:
-            retVal = str(s)
+            retVal = cgi.escape(str(s))
         except:
             sys.stdout.write("<Encoding exception: " + s + " " + str(type(s)) + ">")
             sys.stdout.flush()
 
     return retVal
-
-
-def convertXMLpredefEntities(s):
-    return str(cgi.escape(s).encode(encoding, "xmlcharrefreplace"))

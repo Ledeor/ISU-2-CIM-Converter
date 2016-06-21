@@ -20,10 +20,10 @@ class Customer(cimIdentifiedObject.IdentifiedObject):
         self.kind = "other"
 
     def setKind(self, k):
-        self.kind = serialization.convertXMLpredefEntities(serialization.serialEncode(k))
+        self.kind = serialization.serialEncode(k)
 
     def setName(self, n):
-        self.name = serialization.convertXMLpredefEntities(serialization.serialEncode(n))
+        self.name = serialization.serialEncode(n)
 
     def serialize(self):
         self.sTagOpen = serialization.serialIndent + "<cim:Customer rdf:ID=\"" + self.mRID + "\">" + '\n'

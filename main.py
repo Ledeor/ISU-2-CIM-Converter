@@ -11,6 +11,7 @@
 
 import gc
 import sys
+import os
 import datetime
 
 import cimServiceLocation
@@ -36,9 +37,11 @@ curSARTList = []
 def main():
     #cimParseTemplateAndAccessDB.parseTemplate(templateFile)
 
+    # Extract source data
     print(datetime.datetime.now().strftime("%I:%M%p") + " Executing query...")
     [rows, sGems, sBranches] = cimParseTemplateAndAccessDB.readAccessDBAll(databaseFile)
 
+    # Transform the model
     print(datetime.datetime.now().strftime("%I:%M%p") + " Creating CIM target model...")
     curAOID = ""
     curUPL = ""
@@ -154,12 +157,12 @@ def main():
         if iLoop % 1000 == 0:
             sys.stdout.write("-")
             sys.stdout.flush()
-        if iLoop % 10000 == 0:
+        if iLoop % 5000 == 0:
             sys.stdout.write("|" + str(iLoop) + "|")
             sys.stdout.flush()
             gc.collect()
 
-        if iLoop % 10000 == 0:
+        if iLoop % 5000 == 0:
             iTempFiles = iTempFiles + 1
             print(datetime.datetime.now().strftime("%I:%M%p") + " Writing output file " + tmpFileDirectory + "nis.cim.tmp" + str(iTempFiles))
             with open(tmpFileDirectory + "nis.cim.tmp" + str(iTempFiles), 'w') as f:
@@ -169,7 +172,8 @@ def main():
             gc.collect()
 
     sys.stdout.write("\n")
-    # Compile ISU.CIM
+
+    # Load data into ISU.CIM file
     print(datetime.datetime.now().strftime("%I:%M%p") + " Writing output file " + serialization.serialFileName + "...")
 
     with open(serialization.serialFileName, 'a') as f:
@@ -178,17 +182,22 @@ def main():
         if iTempFiles > 0:
             i = 1
             while i <= iTempFiles:
-                with open(tmpFileDirectory + "nis.cim.tmp" + str(i), 'r') as t:
-                    print("nis.cim.tmp" + str(i) + "...")
-                    f.write(t.read())
-                    t.close()
+                try:
+                    sys.stdout.write("Processing " + tmpFileDirectory + "nis.cim.tmp" + str(i) + "...")
+                    sys.stdout.flush()
+                    with open(tmpFileDirectory + "nis.cim.tmp" + str(i), 'r') as t:
+                        f.write(t.read())
+                        t.close()
+                        os.remove(tmpFileDirectory + "nis.cim.tmp" + str(i))
+                    print("OK")
+                except:
+                    print ("Error")
                 i = i + 1;
         else:
             f.write(sOutput)
         f.write(serialization.serialFooter)
         f.close()
         print("...done")
-
 
     print(datetime.datetime.now().strftime("%I:%M%p") + " ...done.")
 

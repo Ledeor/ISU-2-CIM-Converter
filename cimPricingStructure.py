@@ -22,7 +22,7 @@ class PricingStructure(cimIdentifiedObject.IdentifiedObject):
         self.resSC = None
 
     def setCode(self, c):
-        self.code = serialization.convertXMLpredefEntities(serialization.serialEncode(c))
+        self.code = serialization.serialEncode(c)
 
     def setServiceCategory(self, sc):
         self.resSC = sc

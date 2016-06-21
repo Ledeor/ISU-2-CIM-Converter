@@ -38,14 +38,14 @@ class Location(cimIdentifiedObject.IdentifiedObject):
         self.secondaryAddress = ""
 
     def setMainAddress(self, streetName, streetNr, townName, townCode, stateOrProvince):
-        self.mainAddress.streetDetail.name = serialization.convertXMLpredefEntities(serialization.serialEncode(streetName))
-        self.mainAddress.streetDetail.number = serialization.convertXMLpredefEntities(serialization.serialEncode(streetNr))
-        self.mainAddress.townDetail.name = serialization.convertXMLpredefEntities(serialization.serialEncode(townName))
-        self.mainAddress.townDetail.code = serialization.convertXMLpredefEntities(serialization.serialEncode(townCode))
-        self.mainAddress.townDetail.stateOrProvince = serialization.convertXMLpredefEntities(serialization.serialEncode(stateOrProvince))
+        self.mainAddress.streetDetail.name = serialization.serialEncode(streetName)
+        self.mainAddress.streetDetail.number = serialization.serialEncode(streetNr)
+        self.mainAddress.townDetail.name = serialization.serialEncode(townName)
+        self.mainAddress.townDetail.code = serialization.serialEncode(townCode)
+        self.mainAddress.townDetail.stateOrProvince = serialization.serialEncode(stateOrProvince)
 
     def setSecondaryAddress(self, sAddr):
-        self.secondaryAddress = serialization.convertXMLpredefEntities(sAddr)
+        self.secondaryAddress = serialization.serialEncode(sAddr)
 
 
     def getMainAddress(self):
